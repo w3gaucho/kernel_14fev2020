@@ -132,7 +132,12 @@ class Routing extends Kernel{
         return $uriCode;
     }
     function manual(){
-        print 'roteamento manual<br>';
+        $filename=$this->root().'routes.php';
+        if(file_exists($filename)){
+            return new \Klein\Klein();
+        }else{
+            die($filename.' not found');
+        }
     }
     function setAction($str){
         $this->action=$str;
