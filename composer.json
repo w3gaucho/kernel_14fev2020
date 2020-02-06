@@ -1,0 +1,8 @@
+{
+    "name": "basic/kernel",
+    "autoload": {
+        "psr-4": {
+            "Basic\\": "src/"
+        }
+    }
+}
