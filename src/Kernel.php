@@ -1,6 +1,7 @@
 <?php
 namespace Basic;
 use Basic\Routing;
+use Medoo\Medoo;
 class Kernel{
     function autoRouting(
         $bool=true
@@ -40,6 +41,21 @@ class Kernel{
             $className=$this->e($className,false);
             die('a classe '.$className.' não existe');
         }
+    }
+    function db(){
+        return new Medoo([
+            // required
+            'database_type' => $_ENV['DB_TYPE'],
+            'database_name' => $_ENV['DB_NAME'],
+            'server' => $_ENV['DB_SERVER'],
+            'username' => $_ENV['DB_USERNAME'],
+            'password' => $_ENV['DB_PASSWORD'],
+
+            // [optional]
+            'charset' => $_ENV['DB_CHARSET'],
+            'collation' => $_ENV['DB_COLLATION'],
+            'port' => $_ENV['DB_PORT']
+        ]);
     }
     function e(
         $str=null,
