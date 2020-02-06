@@ -9,5 +9,5 @@
         "catfan/medoo": "1.7.*",
         "klein/klein": "2.1.*",
         "mustache/mustache": "2.13.*"
-    },
+    }
 }
