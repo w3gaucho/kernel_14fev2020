@@ -94,6 +94,13 @@ class Kernel{
     function getMethod(){
         return @$_SERVER['REQUEST_METHOD'];
     }
+    function isDev(){
+        if($_ENV['SITE_MODE']=='dev'){
+            return true;
+        }else{
+            return false;
+        }
+    }
     function root(){
         $str=getcwd();
         $arr=explode('/',$str);
