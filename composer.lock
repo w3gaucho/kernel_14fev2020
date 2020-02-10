@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "42756ce519e757f736ce658d71896508",
+    "content-hash": "536578fc7c28da36c138c6104bcaeba0",
     "packages": [
         {
             "name": "basic/migrate",
-            "version": "v0.1.1",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aicoutos/migrate.git",
-                "reference": "2a01f6563a826e2fc2224dc38de85290bb29f9ad"
+                "reference": "1bc9eacf2f71592372e46dc8f372d763d1e06e55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aicoutos/migrate/zipball/2a01f6563a826e2fc2224dc38de85290bb29f9ad",
-                "reference": "2a01f6563a826e2fc2224dc38de85290bb29f9ad",
+                "url": "https://api.github.com/repos/aicoutos/migrate/zipball/1bc9eacf2f71592372e46dc8f372d763d1e06e55",
+                "reference": "1bc9eacf2f71592372e46dc8f372d763d1e06e55",
                 "shasum": ""
             },
             "type": "library",
@@ -30,7 +30,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2020-02-10T19:28:53+00:00"
+            "time": "2020-02-10T19:40:45+00:00"
         },
         {
             "name": "catfan/medoo",
