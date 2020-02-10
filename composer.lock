@@ -4,8 +4,34 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "38360742e9209ce7db46957dedfc4d59",
+    "content-hash": "42756ce519e757f736ce658d71896508",
     "packages": [
+        {
+            "name": "basic/migrate",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aicoutos/migrate.git",
+                "reference": "2a01f6563a826e2fc2224dc38de85290bb29f9ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aicoutos/migrate/zipball/2a01f6563a826e2fc2224dc38de85290bb29f9ad",
+                "reference": "2a01f6563a826e2fc2224dc38de85290bb29f9ad",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Basic\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "time": "2020-02-10T19:28:53+00:00"
+        },
         {
             "name": "catfan/medoo",
             "version": "v1.7.9",

@@ -9,6 +9,7 @@
         "catfan/medoo": "1.7.9",
         "klein/klein": "2.1.*",
         "mustache/mustache": "2.13.*",
-        "vlucas/phpdotenv": "4.1.*"
+        "vlucas/phpdotenv": "4.1.*",
+        "basic/migrate": "v0.1.1"
     }
 }
