@@ -1,5 +1,6 @@
 <?php
 namespace Basic;
+use Basic\Migrate;
 use Basic\Routing;
 use Medoo\Medoo;
 class Kernel{
@@ -100,6 +101,9 @@ class Kernel{
         }else{
             return false;
         }
+    }
+    function migrate(){
+        return new Migrate();
     }
     function root(){
         $str=getcwd();
