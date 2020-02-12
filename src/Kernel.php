@@ -13,6 +13,15 @@ class Kernel{
             new Routing(false);
         }
     }
+    function cliErrorMsg($str){
+        print '❌ '.$str.PHP_EOL;
+    }
+    function cliFatalError($str){
+        print '❌ '.$str.PHP_EOL;        
+    }
+    function cliSuccessMsg($str){
+        print '✔️ '.$str.PHP_EOL;
+    }
     function controller(
         $str
     ){
