@@ -22,8 +22,8 @@ class Migrate extends Kernel{
             // ler arquivos de textos e extrair as tuplas (coluna + tamanho)
             $arr=$this->getListOfTableFiles();
             $arr=$this->convertListOfTableFilesToTuplesColumnNameVarChar($arr);
-            //$this->setTuplesColumnNameVarChar($arr);
-            return $arr;
+            $this->setTuplesColumnNameVarChar($arr);
+            return $this->getTuplesColumnNameVarChar();
             // verificar se um banco de dados existe
             // ^migrate->databaseExists($str)
             // criar banco de dados
