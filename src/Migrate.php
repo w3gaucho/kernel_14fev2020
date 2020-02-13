@@ -24,10 +24,8 @@ class Migrate extends Kernel{
             $arr=$this->getListOfTableFiles();
             $arr=$this->convertListOfTableFilesToTuplesColumnNameVarChar($arr);
             $this->setTuplesColumnNameVarChar($arr);
-            // verificar se um banco de dados existe
-            return $this->dbExists($_ENV['DB_NAME']);
             // criar banco de dados
-            // ^migrate->createDatabase($str)
+            return $this->createDB($_ENV['DB_NAME']);
             // verificar se uma tabela existe
             // ^migrate->tableExists($str)
             // criar uma tabela
@@ -101,6 +99,22 @@ class Migrate extends Kernel{
             }else{
                 $msg='no tables found at '.$tablesFolder;
                 $this->cliFatalError($msg);
+            }
+        }
+    }
+    function createDB($str){
+        // verificar se um banco de dados existe
+        $exists=$this->dbExists($str);
+        if($exists){
+            return true;
+        }else{
+            $dsn=$_ENV['DB_TYPE'].":host=".$_ENV['DB_SERVER'].";port=".$_ENV['DB_PORT'];
+            $conn = new PDO($dsn, $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']);
+            $sql='CREATE DATABASE '.$str;
+            if($conn->query($sql)){
+                return true;
+            }else{
+                return false;
             }
         }
     }
