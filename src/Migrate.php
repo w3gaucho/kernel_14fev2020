@@ -27,7 +27,7 @@ class Migrate extends Kernel{
             // criar banco de dados
             $this->createDB($_ENV['DB_NAME']);
             // verificar se uma coluna existe
-            // ^migrate->columnExists($tableName,$columnName) <- retorna o length caso ela exista
+            return $this->columnExists('user','name'); //retornao tipo caso ela exista
             // criar uma tabela
             // ^migrate->createTable($str)
             // apagar uma tabela
@@ -54,6 +54,20 @@ class Migrate extends Kernel{
             $migrations[] = $value;
         }
         return $migrations;
+    }
+    function columnExists($tableName,$columnName){
+        $sql="SHOW COLUMNS FROM `$tableName` LIKE '$columnName';";
+        $arr=parent::db()->query($sql)->fetchAll();
+        if ($arr) {
+            $arr2=[
+                'Type'=>$arr[0]['Type'],
+                'Key'=>$arr[0]['Key'],
+                'Extra'=>$arr[0]['Extra']
+            ];
+            return $arr2;
+        }else{
+            return false;
+        }
     }
     function convertListOfTableFilesToTuplesColumnNameVarChar(
         $arr
