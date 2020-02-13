@@ -1,6 +1,7 @@
 <?php
 namespace Basic;
 use Basic\Kernel;
+use PDO;
 class Migrate extends Kernel{
     var $tableFolder;
     var $listOfTableFiles;
@@ -23,9 +24,8 @@ class Migrate extends Kernel{
             $arr=$this->getListOfTableFiles();
             $arr=$this->convertListOfTableFilesToTuplesColumnNameVarChar($arr);
             $this->setTuplesColumnNameVarChar($arr);
-            return $this->getTuplesColumnNameVarChar();
             // verificar se um banco de dados existe
-            // ^migrate->databaseExists($str)
+            return $this->dbExists($_ENV['DB_NAME']);
             // criar banco de dados
             // ^migrate->createDatabase($str)
             // verificar se uma tabela existe
@@ -102,6 +102,20 @@ class Migrate extends Kernel{
                 $msg='no tables found at '.$tablesFolder;
                 $this->cliFatalError($msg);
             }
+        }
+    }
+    function dbExists($str){
+        $dsn=$_ENV['DB_TYPE'].":host=".$_ENV['DB_SERVER'].";port=".$_ENV['DB_PORT'];
+        $conn = new PDO($dsn, $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD']);
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $databases = $conn->query('show databases')->fetchAll(PDO::FETCH_COLUMN);
+        if(in_array($str,$databases)){
+            //existe
+            return true;
+        }
+        else {
+            //não existe
+            return false;
         }
     }
     function getListOfTableFiles(){
