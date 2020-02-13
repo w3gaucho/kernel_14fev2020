@@ -22,8 +22,8 @@ class Migrate extends Kernel{
             // ler arquivos de textos e extrair as tuplas (coluna + tamanho)
             $arr=$this->getListOfTableFiles();
             $arr=$this->convertListOfTableFilesToTuplesColumnNameVarChar($arr);
-            $this->setTuplesColumnNameVarChar($arr);
-            return $this->getTuplesColumnNameVarChar();
+            //$this->setTuplesColumnNameVarChar($arr);
+            return $arr;
             // verificar se um banco de dados existe
             // ^migrate->databaseExists($str)
             // criar banco de dados
@@ -59,12 +59,14 @@ class Migrate extends Kernel{
         }
         return $migrations;
     }
-    function convertListOfTableFilesToTuplesColumnNameVarChar($arr){
+    function convertListOfTableFilesToTuplesColumnNameVarChar(
+        $arr
+    ){
         $columnNameVarChar=false;
-        $tablesFolder=$this->root().'app/table/';
+        $tablesFolder=$this->getTableFolder();
         foreach ($arr as $key => $value) {//cada arquivo
-            $filename=$tablesFolder.$value;
-            if(files_exists($filename)){
+            $filename=$tablesFolder.'/'.$value;
+            if(file_exists($filename)){
                 $str=file_get_contents($filename);
                 $str=trim($str);
                 $arr2=explode(PHP_EOL,$str);
@@ -74,8 +76,8 @@ class Migrate extends Kernel{
                 if(is_array($arr2) && count($arr2)>0){
                     foreach ($arr2 as $key => $value) {//cada linha
                         $arr3=explode('_',$value);
-                        $columnName=@trim($arr[0]);
-                        $varChar=@trim($arr[1]);
+                        $columnName=@trim($arr3[0]);
+                        $varChar=@trim($arr3[1]);
                         $columnNameVarChar[$columnName]=$varChar;
                     }
                 }
@@ -83,7 +85,7 @@ class Migrate extends Kernel{
         }
         if($columnNameVarChar){
             foreach ($columnNameVarChar as $columnName => $varChar) {
-                if(!is_integer($varChar)){
+                if(!ctype_digit($varChar)){
                     $msg=$varChar.' is not integer';
                     $this->cliFatalError($msg);
                     unset($columnNameVarChar[$columnName]);
