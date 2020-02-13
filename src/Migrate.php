@@ -2,36 +2,50 @@
 namespace Basic;
 use Basic\Kernel;
 class Migrate extends Kernel{
+    var $tableFolder;
     var $listOfTableFiles;
     var $tuplesColumnNameVarChar;
-    function all(){
-        // converter os arquivos de uma pasta em uma lista de arquivos
-        $str=$this->root().'app/table';
-        $arr=$this->convertFolderToListOfFiles($folder);
-        // listar arquivos com as colunas em table/<arquivos>
-        $this->setListOfTableFiles($arr);
-        // ler arquivos de textos e extrair as tuplas (coluna + tamanho)
-        $arr=$this->getListOfTableFiles();
-        $arr=$this->convertListOfTableFilesToTuplesColumnNameVarChar($arr);
-        $this->setTuplesColumnNameVarChar($arr);
-        // verificar se um banco de dados existe
-        // ^migrate->databaseExists($str)
-        // criar banco de dados
-        // ^migrate->createDatabase($str)
-        // verificar se uma tabela existe
-        // ^migrate->tableExists($str)
-        // criar uma tabela
-        // ^migrate->createTable($str)
-        // apagar uma tabela
-        // ^migrate->deleteTable($str)
-        // verificar se uma coluna existe
-        // ^migrate->columnExists($str) <- retorna o length caso ela exista
-        // criar uma coluna
-        // ^migrate->createColumn($str)
-        // alterar o tamanho da coluna (ex: varchar(n))
-        // ^migrate->changeColumnLength($str,$int)
-        // apagar uma coluna
-        // ^migrate->deleteColumn($str)
+    function all($str=false){
+        $this->clear();
+        if(!$str){
+            $str=$this->root().'app/table';
+        }
+        //verifica se a pasta existe
+        if(file_exists($str)){
+            //setar a variavel tableFolder
+            $this->setTableFolder($str);
+            // converter os arquivos de uma pasta em uma lista de arquivos
+            $str=$this->getTableFolder();
+            $arr=$this->convertFolderToListOfFiles($str);
+            // listar arquivos com as colunas em table/<arquivos>
+            $this->setListOfTableFiles($arr);
+            // ler arquivos de textos e extrair as tuplas (coluna + tamanho)
+            $arr=$this->getListOfTableFiles();
+            $arr=$this->convertListOfTableFilesToTuplesColumnNameVarChar($arr);
+            $this->setTuplesColumnNameVarChar($arr);
+            return $this->getTuplesColumnNameVarChar();
+            // verificar se um banco de dados existe
+            // ^migrate->databaseExists($str)
+            // criar banco de dados
+            // ^migrate->createDatabase($str)
+            // verificar se uma tabela existe
+            // ^migrate->tableExists($str)
+            // criar uma tabela
+            // ^migrate->createTable($str)
+            // apagar uma tabela
+            // ^migrate->deleteTable($str)
+            // verificar se uma coluna existe
+            // ^migrate->columnExists($str) <- retorna o length caso ela exista
+            // criar uma coluna
+            // ^migrate->createColumn($str)
+            // alterar o tamanho da coluna (ex: varchar(n))
+            // ^migrate->changeColumnLength($str,$int)
+            // apagar uma coluna
+            // ^migrate->deleteColumn($str)
+        }else {
+            $msg='folder "'.$str.'" not found';
+            $this->cliFatalError($msg);
+        }
     }
     function convertFolderToListOfFiles($str){
         $folder=$str;
@@ -91,11 +105,17 @@ class Migrate extends Kernel{
     function getListOfTableFiles(){
         return $this->listOfTableFiles;
     }
+    function getTableFolder(){
+        return $this->tableFolder;
+    }
     function getTuplesColumnNameVarChar(){
         return $this->tuplesColumnNameVarChar;
     }
     function setListOfTableFiles($arr){
         $this->listOfTableFiles=$arr;
+    }
+    function setTableFolder($str){
+        $this->tableFolder=$str;
     }
     function setTuplesColumnNameVarChar($arr){
         $this->tuplesColumnNameVarChar=$arr;
