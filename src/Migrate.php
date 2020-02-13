@@ -25,15 +25,13 @@ class Migrate extends Kernel{
             $arr=$this->convertListOfTableFilesToTuplesColumnNameVarChar($arr);
             $this->setTuplesColumnNameVarChar($arr);
             // criar banco de dados
-            return $this->createDB($_ENV['DB_NAME']);
-            // verificar se uma tabela existe
-            // ^migrate->tableExists($str)
+            $this->createDB($_ENV['DB_NAME']);
+            // verificar se uma coluna existe
+            // ^migrate->columnExists($tableName,$columnName) <- retorna o length caso ela exista
             // criar uma tabela
             // ^migrate->createTable($str)
             // apagar uma tabela
             // ^migrate->deleteTable($str)
-            // verificar se uma coluna existe
-            // ^migrate->columnExists($str) <- retorna o length caso ela exista
             // criar uma coluna
             // ^migrate->createColumn($str)
             // alterar o tamanho da coluna (ex: varchar(n))
@@ -149,6 +147,14 @@ class Migrate extends Kernel{
     }
     function setTuplesColumnNameVarChar($arr){
         $this->tuplesColumnNameVarChar=$arr;
+    }
+    function tableExists($str){
+        $arr=parent::db()->query('SHOW TABLES LIKE \''.$str.'\';')->fetchAll();
+        if ($arr) {
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 ?>
