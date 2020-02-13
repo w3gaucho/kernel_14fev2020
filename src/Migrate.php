@@ -26,8 +26,7 @@ class Migrate extends Kernel{
             $this->setTuplesColumnNameVarChar($arr);
             // criar banco de dados
             $this->createDB($_ENV['DB_NAME']);
-            // verificar se uma coluna existe
-            return $this->columnExists('user','name'); //retornao tipo caso ela exista
+            return $this->getTableWithColumns('user');//com Type, Key e Extra
             // criar uma tabela
             // ^migrate->createTable($str)
             // apagar uma tabela
@@ -146,6 +145,22 @@ class Migrate extends Kernel{
     }
     function getListOfTableFiles(){
         return $this->listOfTableFiles;
+    }
+    function getTableWithColumns($str){
+        $arr=parent::db()->query('SHOW COLUMNS FROM '.$str.';')->fetchAll();
+        $arr2=false;
+        if ($arr) {
+            foreach ($arr as $key => $value) {
+                $arr2[$value['Field']]=[
+                    'Type'=>$value['Type'],
+                    'Key'=>$value['Key'],
+                    'Extra'=>$value['Extra']
+                ];
+            }
+            return $arr2;
+        }else{
+            return false;
+        }
     }
     function getTableFolder(){
         return $this->tableFolder;
