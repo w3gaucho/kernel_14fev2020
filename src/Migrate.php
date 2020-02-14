@@ -4,6 +4,7 @@ use Basic\Kernel;
 use PDO;
 class Migrate extends Kernel{
     var $tableFolder;
+    var $listOfTableDB;
     var $listOfTableFiles;
     var $tuplesColumnNameVarChar;
     function all($str=false){
@@ -27,7 +28,9 @@ class Migrate extends Kernel{
             // criar banco de dados
             $this->createDB($_ENV['DB_NAME']);
             $this->createTable('user');
-            return $this->deleteColumn('user','id');
+            $this->createTable('photo');
+            $this->setListOfTablesDB();
+            return $this->getListOfTableDB();
             // criar uma tabela
             // ^migrate->createTable($str)
             // apagar uma tabela
@@ -125,6 +128,9 @@ class Migrate extends Kernel{
             }
         }
     }
+    function convertTuplesColumnNameVarCharToStructure($arr){
+
+    }
     function createColumn($tableName,$columnName,$columnVarChar){
         if($columnName=='id' && $columnVarChar=='0'){
             $type='SERIAL NOT NULL';
@@ -178,6 +184,9 @@ class Migrate extends Kernel{
         $sql='DROP TABLE `'.$str.'`;';
         return parent::db()->query($sql);
     }
+    function getListOfTableDB(){
+        return $this->listOfTableDB;
+    }
     function getListOfTableFiles(){
         return $this->listOfTableFiles;
     }
@@ -202,6 +211,16 @@ class Migrate extends Kernel{
     }
     function getTuplesColumnNameVarChar(){
         return $this->tuplesColumnNameVarChar;
+    }
+    function setListOfTablesDB(){
+        $arr=parent::db()->query('SHOW TABLES')->fetchAll();
+        $tables=false;
+        if (is_array($arr)) {
+            foreach ($arr as $key => $value) {
+                $tables[]=array_values($value)[0];
+            }
+        }
+        $this->listOfTableDB=$tables;
     }
     function setListOfTableFiles($arr){
         $this->listOfTableFiles=$arr;
