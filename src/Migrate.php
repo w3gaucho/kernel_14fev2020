@@ -27,7 +27,7 @@ class Migrate extends Kernel{
             // criar banco de dados
             $this->createDB($_ENV['DB_NAME']);
             $this->createTable('user');
-            return $this->createColumn('user','name','32');
+            return $this->changeColumn('user','name','42');
             // criar uma tabela
             // ^migrate->createTable($str)
             // apagar uma tabela
@@ -42,6 +42,17 @@ class Migrate extends Kernel{
             $msg='folder "'.$str.'" not found';
             $this->cliFatalError($msg);
         }
+    }
+    function changeColumn($tableName,$columnName,$columnVarChar){
+        if($columnName=='id' && $columnVarChar=='0'){
+            $type='SERIAL NOT NULL';
+        }elseif($columnVarChar=='0'){
+            $type='BIGINT';
+        }else{
+            $type='VARCHAR('.$columnVarChar.')';
+        }
+        $sql="ALTER TABLE `$tableName` MODIFY `$columnName` $type;";
+        return parent::db()->query($sql);
     }
     function convertFolderToListOfFiles($str){
         $folder=$str;
