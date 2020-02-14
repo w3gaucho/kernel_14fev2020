@@ -27,7 +27,7 @@ class Migrate extends Kernel{
             // criar banco de dados
             $this->createDB($_ENV['DB_NAME']);
             $this->createTable('user');
-            return $this->changeColumn('user','name','42');
+            return $this->deleteColumn('user','id');
             // criar uma tabela
             // ^migrate->createTable($str)
             // apagar uma tabela
@@ -169,6 +169,10 @@ class Migrate extends Kernel{
             //não existe
             return false;
         }
+    }
+    function deleteColumn($tableName,$columnName){
+        $sql="ALTER TABLE `$tableName` DROP `$columnName`;";
+        return parent::db()->query($sql);
     }
     function deleteTable($str){
         $sql='DROP TABLE `'.$str.'`;';
