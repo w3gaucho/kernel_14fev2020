@@ -117,7 +117,6 @@ class Migrate extends Kernel{
     function createColumn($tableName,$columnName,$columnVarChar){
         if($columnName=='id' && $columnVarChar=='0'){
             $type='SERIAL NOT NULL';
-            $sql='ALTER TABLE `user` ADD `teste` VARCHAR(12) NOT NULL AFTER `id`';
         }elseif($columnVarChar=='0'){
             $type='BIGINT';
         }else{
