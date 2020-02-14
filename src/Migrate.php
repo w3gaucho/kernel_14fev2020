@@ -26,7 +26,8 @@ class Migrate extends Kernel{
             $this->setTuplesColumnNameVarChar($arr);
             // criar banco de dados
             $this->createDB($_ENV['DB_NAME']);
-            return $this->deleteTable('user');
+            $this->createTable('user');
+            return $this->createColumn('user','name','32');
             // criar uma tabela
             // ^migrate->createTable($str)
             // apagar uma tabela
@@ -112,6 +113,18 @@ class Migrate extends Kernel{
                 $this->cliFatalError($msg);
             }
         }
+    }
+    function createColumn($tableName,$columnName,$columnVarChar){
+        if($columnName=='id' && $columnVarChar=='0'){
+            $type='SERIAL NOT NULL';
+            $sql='ALTER TABLE `user` ADD `teste` VARCHAR(12) NOT NULL AFTER `id`';
+        }elseif($columnVarChar=='0'){
+            $type='BIGINT';
+        }else{
+            $type='VARCHAR('.$columnVarChar.')';
+        }
+        $sql="ALTER TABLE `$tableName` ADD `$columnName` $type;";
+        return parent::db()->query($sql);
     }
     function createDB($str){
         // verificar se um banco de dados existe
