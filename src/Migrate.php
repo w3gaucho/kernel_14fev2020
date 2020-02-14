@@ -26,7 +26,7 @@ class Migrate extends Kernel{
             $this->setTuplesColumnNameVarChar($arr);
             // criar banco de dados
             $this->createDB($_ENV['DB_NAME']);
-            return $this->getTableWithColumns('user');//com Type, Key e Extra
+            return $this->createTable('user');
             // criar uma tabela
             // ^migrate->createTable($str)
             // apagar uma tabela
@@ -128,6 +128,10 @@ class Migrate extends Kernel{
                 return false;
             }
         }
+    }
+    function createTable($str){
+        $sql='CREATE TABLE IF NOT EXISTS `'.$str.'`(id serial) ENGINE=INNODB DEFAULT CHARSET=utf8;';
+        return parent::db()->query($sql);
     }
     function dbExists($str){
         $dsn=$_ENV['DB_TYPE'].":host=".$_ENV['DB_SERVER'].";port=".$_ENV['DB_PORT'];
