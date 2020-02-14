@@ -26,7 +26,7 @@ class Migrate extends Kernel{
             $this->setTuplesColumnNameVarChar($arr);
             // criar banco de dados
             $this->createDB($_ENV['DB_NAME']);
-            return $this->createTable('user');
+            return $this->deleteTable('user');
             // criar uma tabela
             // ^migrate->createTable($str)
             // apagar uma tabela
@@ -146,6 +146,10 @@ class Migrate extends Kernel{
             //não existe
             return false;
         }
+    }
+    function deleteTable($str){
+        $sql='DROP TABLE `'.$str.'`;';
+        return parent::db()->query($sql);
     }
     function getListOfTableFiles(){
         return $this->listOfTableFiles;
